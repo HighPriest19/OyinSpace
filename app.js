@@ -1,224 +1,210 @@
-/* -------------------- LOCAL STORAGE HELPERS -------------------- */
-function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
-function load(k){ return JSON.parse(localStorage.getItem(k)) || []; }
+/* ---------- Oyin's Study Corner JS ---------- */
 
-/* -------------------- GREETING -------------------- */
+/* ---------- Helper for localStorage ---------- */
+function save(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+function load(key){ return JSON.parse(localStorage.getItem(key)) || []; }
+
+/* ---------- GREETING ---------- */
 function greeting(){
-    let h = new Date().getHours();
-    let t = "Hello Oyin 🩷";
-    if(h<12) t="Good morning Oyin 🩷";
-    else if(h<18) t="Good afternoon Oyin 🩷";
-    else t="Good evening Oyin 🩷";
-    document.getElementById("greeting").textContent = t;
+    const h = new Date().getHours();
+    let text = "Hello Oyin 💗";
+    if(h < 12) text = "Good morning Oyin 🩷";
+    else if(h < 18) text = "Good afternoon Oyin 🩷";
+    else text = "Good evening Oyin 🩷";
+    document.getElementById("greeting").textContent = text;
 }
+greeting();
 
-/* -------------------- NOTIFICATION SOUND -------------------- */
-function playNotification(){
-    const audio = new Audio('assets/audio/notification.mp3');
-    audio.play().catch(()=>console.log("Mobile requires interaction first."));
-}
-
-/* -------------------- RENDER TODO SECTION -------------------- */
+/* ---------- TODOS ---------- */
+let todos = load("oyinTodos");
 const todoSection = document.getElementById("todo-section");
 todoSection.innerHTML = `
-  <div class="card">
-    <h2>To-Do List 🌸</h2>
-    <input id="todoText" placeholder="Add a task...">
-    <button id="addTodoBtn">Add</button>
-    <ul id="todoList"></ul>
-  </div>
-`;
+<div class="card">
+  <h2>To-Do List 🌸</h2>
+  <input id="todoText" placeholder="Add a task...">
+  <button class="cta" id="addTodoBtn">Add</button>
+  <ul id="todoList"></ul>
+</div>`;
+const todoListEl = document.getElementById("todoList");
+const todoTextEl = document.getElementById("todoText");
 
-let todos = load("todos");
-function displayTodo(){
-    document.getElementById("todoList").innerHTML = todos.map((t,i)=>`<li>${t} <button onclick="delTodo(${i})">x</button></li>`).join("");
+function displayTodos(){
+    todoListEl.innerHTML = todos.map((t,i)=>`<li>${t} <button onclick="delTodo(${i})">x</button></li>`).join("");
 }
 function addTodo(){
-    let t = document.getElementById("todoText").value;
+    const t = todoTextEl.value.trim();
     if(!t) return;
     todos.push(t);
-    save("todos", todos);
-    displayTodo();
-    document.getElementById("todoText").value="";
-    playNotification();
+    save("oyinTodos", todos);
+    displayTodos();
+    todoTextEl.value="";
 }
 function delTodo(i){
     todos.splice(i,1);
-    save("todos", todos);
-    displayTodo();
+    save("oyinTodos", todos);
+    displayTodos();
 }
-displayTodo();
-document.getElementById("addTodoBtn").onclick = addTodo;
+document.getElementById("addTodoBtn").addEventListener("click", addTodo);
+displayTodos();
 
-/* -------------------- RENDER STUDY SECTION -------------------- */
+/* ---------- STUDY PLANNER ---------- */
+let study = load("oyinStudy");
 const studySection = document.getElementById("study-section");
 studySection.innerHTML = `
-  <div class="card">
-    <h2>Study Planner 📘</h2>
-    <input id="studyTopic" placeholder="Topic">
-    <input id="studyTime" type="time">
-    <button id="addStudyBtn">Save</button>
-    <ul id="studyList"></ul>
-  </div>
-`;
+<div class="card">
+  <h2>Study Planner 📘</h2>
+  <input id="studyTopic" placeholder="What are you studying?">
+  <input id="studyTime" type="time">
+  <button class="cta" id="addStudyBtn">Save</button>
+  <ul id="studyList"></ul>
+</div>`;
+const studyListEl = document.getElementById("studyList");
+const studyTopicEl = document.getElementById("studyTopic");
+const studyTimeEl = document.getElementById("studyTime");
 
-let study = load("study");
 function displayStudy(){
-    document.getElementById("studyList").innerHTML = study.map((s,i)=>`<li>${s.topic} at ${s.time} <button onclick="delStudy(${i})">x</button></li>`).join("");
+    studyListEl.innerHTML = study.map((s,i)=>`<li>${s.topic} at ${s.time} <button onclick="delStudy(${i})">x</button></li>`).join("");
 }
 function addStudy(){
-    let topic = document.getElementById("studyTopic").value;
-    let time = document.getElementById("studyTime").value;
+    const topic = studyTopicEl.value.trim();
+    const time = studyTimeEl.value;
     if(!topic || !time) return;
     study.push({topic,time});
-    save("study", study);
+    save("oyinStudy", study);
     displayStudy();
-    playNotification();
+    studyTopicEl.value=""; studyTimeEl.value="";
 }
 function delStudy(i){
     study.splice(i,1);
-    save("study", study);
+    save("oyinStudy", study);
     displayStudy();
 }
+document.getElementById("addStudyBtn").addEventListener("click", addStudy);
 displayStudy();
-document.getElementById("addStudyBtn").onclick = addStudy;
 
-/* -------------------- RENDER JOURNAL SECTION -------------------- */
+/* ---------- JOURNAL ---------- */
 const journalSection = document.getElementById("journal-section");
 journalSection.innerHTML = `
-  <div class="card">
-    <h2>Daily Journal 🦋</h2>
-    <textarea id="journal" rows="4" placeholder="Write your thoughts..."></textarea>
-    <button id="saveJournalBtn">Save</button>
-  </div>
-`;
+<div class="card">
+  <h2>Daily Journal 🦋</h2>
+  <textarea id="journalText" rows="4" placeholder="Write your thoughts..."></textarea>
+  <button class="cta" id="saveJournalBtn">Save</button>
+</div>`;
+const journalTextEl = document.getElementById("journalText");
+journalTextEl.value = localStorage.getItem("oyinJournal") || "";
+document.getElementById("saveJournalBtn").addEventListener("click", ()=>{
+    localStorage.setItem("oyinJournal", journalTextEl.value);
+});
 
-document.getElementById("journal").value = localStorage.getItem("journal") || "";
-document.getElementById("saveJournalBtn").onclick = () => {
-    localStorage.setItem("journal", document.getElementById("journal").value);
-    playNotification();
-};
-
-/* -------------------- RENDER SELF-CARE SECTION -------------------- */
+/* ---------- SELF-CARE ---------- */
 const selfcareSection = document.getElementById("selfcare-section");
-selfcareSection.innerHTML = `
-  <div class="card">
-    <h2>Self-Care 💗</h2>
-    <button id="drinkBtn">Drink Water 💧</button>
-    <p>Water Count: <span id="waterCount">0</span></p>
-    <button id="pomodoroBtn">Start Pomodoro ⏱️</button>
-    <p>Pomodoro Timer: <span id="pomodoroTimer">00:00</span></p>
-  </div>
-`;
-
-/* --- WATER --- */
-let waterCount = parseInt(localStorage.getItem("waterCount")) || 0;
-document.getElementById("waterCount").textContent = waterCount;
-document.getElementById("drinkBtn").onclick = () => {
-    waterCount++;
-    localStorage.setItem("waterCount", waterCount);
-    document.getElementById("waterCount").textContent = waterCount;
-    playNotification();
-    const msgs = ["Good job staying hydrated 💧💗","Water is life! 🌸","Keep sipping, lovely 🩷"];
-    botReply(msgs[Math.floor(Math.random()*msgs.length)]);
-};
-
-/* --- POMODORO --- */
-let pomodoroTimerEl = document.getElementById("pomodoroTimer");
-let pomodoroBtn = document.getElementById("pomodoroBtn");
-let pomodoroSeconds = 25*60;
-let pomodoroInterval;
-pomodoroBtn.onclick = () => {
-    clearInterval(pomodoroInterval);
-    pomodoroSeconds = 25*60;
-    pomodoroInterval = setInterval(()=>{
-        let m = Math.floor(pomodoroSeconds/60).toString().padStart(2,'0');
-        let s = (pomodoroSeconds%60).toString().padStart(2,'0');
-        pomodoroTimerEl.textContent = `${m}:${s}`;
-        if(pomodoroSeconds<=0){
-            clearInterval(pomodoroInterval);
-            playNotification();
-            botReply("Pomodoro finished! Take a short break 🩷");
-        }
-        pomodoroSeconds--;
-    },1000);
-    botReply("Pomodoro started! Focus and shine 🌸");
-};
-
-/* -------------------- DHIKR SECTION -------------------- */
-const prayerSection = document.getElementById("prayer-section");
-prayerSection.innerHTML = `
-  <div class="card">
-    <h2>Prayer & Dhikr 🌙</h2>
-    <button id="dhikrBtn">+1 Dhikr</button>
-    <p>Count: <span id="dhikrCount">0</span></p>
-    <button id="prayerBtn">Enable Reminders</button>
-    <ul id="prayerList"></ul>
-  </div>
-`;
-
-let dhikrCount = parseInt(localStorage.getItem("dhikr")) || 0;
-document.getElementById("dhikrCount").textContent = dhikrCount;
-document.getElementById("dhikrBtn").onclick = () => {
-    dhikrCount++;
-    localStorage.setItem("dhikr", dhikrCount);
-    document.getElementById("dhikrCount").textContent = dhikrCount;
-    playNotification();
-};
-
-/* --- PRAYER --- */
-let prayers = ["Fajr 🌅","Zuhur ☀️","Asr 🌤️","Maghrib 🌇","Isha 🌌"];
-document.getElementById("prayerBtn").onclick = () => {
-    let list = document.getElementById("prayerList");
-    list.innerHTML = prayers.map(p=>`<li>${p} - Reminder enabled</li>`).join("");
-    playNotification();
-};
-
-/* -------------------- WALLPAPER SECTION -------------------- */
-const wallpaperSection = document.getElementById("wallpapers-section");
-wallpaperSection.innerHTML = `
-  <div class="card">
-    <h2>Wallpapers 🎨</h2>
-    <button id="changeWallpaperBtn">Change Wallpaper</button>
-  </div>
-`;
-
-const wallpapers = [
-    "assets/images/wallpapers/wp1.jpg",
-    "assets/images/wallpapers/wp2.jpg",
-    "assets/images/wallpapers/wp3.jpg",
-    "assets/images/wallpapers/wp4.jpg",
-    "assets/images/wallpapers/wp5.jpg"
+const selfcareTasks = [
+    "Drink water 💧",
+    "Skin care reminder ✨",
+    "Eat something 🍓",
+    "Stretch / rest your mind 🧘‍♀️",
+    "Prayer / gratitude moment 🩷",
+    "Evening routine 🌙"
 ];
-let currentWallpaper = parseInt(localStorage.getItem("wallpaper")) || 0;
-const wallpaperMessages = ["Looking cute today 🩷","New vibes, new energy 🌸","Soft-girl aesthetic activated 💗","You’re glowing, Oyin 🦋","Mood: cozy & productive ✨"];
-function initWallpaper(){ 
-    document.body.style.backgroundImage = `url(${wallpapers[currentWallpaper]})`;
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-}
-initWallpaper();
-document.getElementById("changeWallpaperBtn").onclick = () => {
-    currentWallpaper++;
-    if(currentWallpaper>=wallpapers.length) currentWallpaper=0;
-    initWallpaper();
-    localStorage.setItem("wallpaper", currentWallpaper);
-    playNotification();
-    botReply(wallpaperMessages[Math.floor(Math.random()*wallpaperMessages.length)]);
-};
+selfcareSection.innerHTML = `<div class="card"><h2>Daily Self-Care 💗</h2><ul id="selfcareList"></ul></div>`;
+const selfcareListEl = document.getElementById("selfcareList");
+selfcareListEl.innerHTML = selfcareTasks.map(t=>`<li>${t}</li>`).join("");
 
-/* -------------------- DAILY QUOTES + QUR’AN VERSE -------------------- */
-const dailyVerses = ["Indeed, with hardship comes ease. (94:6)","So remember Me; I will remember you. (2:152)","And He is with you wherever you are. (57:4)"];
-const dailyQuotes = ["Take a deep breath and shine ✨","Small steps, big dreams 🩷","Soft heart, strong mind 💗","You are enough today 💕"];
-function showDailyVerseAndQuote(){
-    const verseEl = document.createElement("p");
-    verseEl.textContent = dailyVerses[Math.floor(Math.random()*dailyVerses.length)];
-    document.getElementById("main").prepend(verseEl);
-    const quoteEl = document.createElement("p");
-    quoteEl.textContent = dailyQuotes[Math.floor(Math.random()*dailyQuotes.length)];
-    document.getElementById("main").prepend(quoteEl);
-}
-showDailyVerseAndQuote();
+/* ---------- WALLPAPERS ---------- */
+const wallpapersSection = document.getElementById("wallpapers-section");
+const wallpapers = [
+    "assets/images/wallpapers/wall1.jpg",
+    "assets/images/wallpapers/wall2.jpg",
+    "assets/images/wallpapers/wall3.jpg"
+];
+wallpapersSection.innerHTML = `
+<div class="card">
+  <h2>Wallpapers 🎨</h2>
+  <div class="wallpapers-grid" id="wallpaperGrid"></div>
+</div>`;
+const wallpaperGridEl = document.getElementById("wallpaperGrid");
+wallpapers.forEach(url=>{
+    const img = document.createElement("img");
+    img.src = url;
+    img.addEventListener("click", ()=>{
+        document.body.style.backgroundImage = `url(${url})`;
+        localStorage.setItem("oyinWallpaper", url);
+    });
+    wallpaperGridEl.appendChild(img);
+});
+// Load saved wallpaper
+const savedWallpaper = localStorage.getItem("oyinWallpaper");
+if(savedWallpaper) document.body.style.backgroundImage = `url(${savedWallpaper})`;
 
-/* -------------------- INITIALIZE GREETING -------------------- */
-greeting();
+/* ---------- WATER TRACKER ---------- */
+const waterSection = document.getElementById("water-section");
+waterSection.innerHTML = `
+<div class="card">
+  <h2>Hydration 💧</h2>
+  <div class="water-grid">
+    <span id="waterCount">0</span> glasses
+    <button class="cta" id="drinkBtn">Drink +1</button>
+  </div>
+</div>`;
+let waterCount = parseInt(localStorage.getItem("oyinWater")||0);
+document.getElementById("waterCount").textContent = waterCount;
+document.getElementById("drinkBtn").addEventListener("click", ()=>{
+    waterCount++;
+    localStorage.setItem("oyinWater", waterCount);
+    document.getElementById("waterCount").textContent = waterCount;
+});
+
+/* ---------- POMODORO ---------- */
+const pomodoroSection = document.getElementById("pomodoro-section");
+pomodoroSection.innerHTML = `
+<div class="card">
+  <h2>Pomodoro Timer ⏱️</h2>
+  <div class="pomodoro-big" id="pomodoroDisplay">25:00</div>
+  <button class="cta" id="pomStartBtn">Start</button>
+  <button class="cta" id="pomStopBtn">Stop</button>
+</div>`;
+let pomTime = 25*60;
+let pomInterval;
+const pomDisplay = document.getElementById("pomodoroDisplay");
+function updatePom(){ 
+    let m=Math.floor(pomTime/60), s=pomTime%60;
+    pomDisplay.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+}
+document.getElementById("pomStartBtn").addEventListener("click", ()=>{
+    if(pomInterval) return;
+    pomInterval = setInterval(()=>{
+        if(pomTime<=0){ clearInterval(pomInterval); pomInterval=null; pomTime=25*60; updatePom(); return; }
+        pomTime--; updatePom();
+    },1000);
+});
+document.getElementById("pomStopBtn").addEventListener("click", ()=>{
+    clearInterval(pomInterval); pomInterval=null;
+});
+updatePom();
+
+/* ---------- PRAYER WIDGET (simplified) ---------- */
+const prayerSection = document.getElementById("prayer-section");
+prayerSection.innerHTML = `<div class="card"><h2>Prayer Times 🌙</h2><p>Enable reminders from settings ⚡</p></div>`;
+
+/* ---------- AI BOT (basic) ---------- */
+const botBtn = document.getElementById("botBtn");
+const botBox = document.getElementById("botBox");
+botBtn.addEventListener("click", ()=>{
+    botBox.style.display = botBox.style.display==='flex'?'none':'flex';
+    botBox.setAttribute('aria-hidden', botBox.style.display==='none'?'true':'false');
+});
+botBox.innerHTML = `<div class="bot-messages" id="botMessages"></div>
+<div id="botInput"><input id="botText" placeholder="Type..."><button class="cta" id="sendBotBtn">Send</button></div>`;
+const botMessages = document.getElementById("botMessages");
+document.getElementById("sendBotBtn").addEventListener("click", ()=>{
+    const txt = document.getElementById("botText").value.trim();
+    if(!txt) return;
+    botMessages.innerHTML += `<p class="msg you"><span class="bubble you">${txt}</span></p>`;
+    let reply = "I'm here with you always, Oyin 🩷";
+    if(txt.toLowerCase().includes("hi")||txt.toLowerCase().includes("hello")) reply="Hi sweetheart 🩷";
+    else if(txt.toLowerCase().includes("study")) reply="Have you prayed? Then let's plan your study 🦋";
+    else if(txt.toLowerCase().includes("love")) reply="I love you too, deeply 💗";
+    botMessages.innerHTML += `<p class="msg bot"><span class="bubble bot">${reply}</span></p>`;
+    document.getElementById("botText").value="";
+    botMessages.scrollTop = botMessages.scrollHeight;
+});
