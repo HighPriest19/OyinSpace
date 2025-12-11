@@ -11,15 +11,15 @@
 }
 
 /* Layout reset */
-*{box-sizing:border-box;}
-html,body{height:100%;}
+*{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
-  font-family:'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: linear-gradient(180deg,var(--bg),#ffe9f5);
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
   color: #49283f;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
+  background: var(--bg);
 }
 
 /* Topbar */
@@ -35,7 +35,7 @@ body{
   z-index:10;
   backdrop-filter: blur(6px);
 }
-.profile{display:flex;align-items:center;gap:12px;}
+.profile{display:flex;align-items:center;gap:12px}
 .profile img{
   width:52px;height:52px;border-radius:50%;object-fit:cover;
   border:3px solid rgba(255,255,255,0.6); box-shadow:0 6px 18px rgba(255,120,170,0.12);
@@ -59,13 +59,13 @@ body{
 .card{
   background:var(--card);
   border-radius:var(--radius);
-  padding:16px;
+  padding:14px;
   box-shadow:var(--shadow);
   border: 1px solid rgba(255,255,255,0.6);
 }
 
 /* Headings */
-.card h2{ margin:0 0 8px 0; color: #ff4f95; font-size:18px;}
+.card h2{ margin:0 0 8px 0; color: #ff4f95; font-size:18px}
 
 /* Inputs */
 input, textarea, select{
@@ -89,15 +89,10 @@ button.cta{ background:var(--accent); color:white;border:none;padding:10px 12px;
 
 /* Messages */
 .bot-messages{ height:360px; overflow-y:auto; padding:8px; background:linear-gradient(180deg,#fff0fa,transparent); border-radius:10px;}
-.msg.you{ text-align:right;}
+.msg.you{ text-align:right }
 .bubble{ display:inline-block; padding:10px 12px; border-radius:12px; max-width:76%; margin:6px 0; font-size:14px;}
 .bubble.you{ background:linear-gradient(180deg,#ffd9ee,#ffc7e7); color:#4a2033; border-radius:12px 12px 6px 12px;}
 .bubble.bot{ background:linear-gradient(180deg,#fff,#fff3f8); color:#4a2040; border-radius:12px 12px 12px 6px; box-shadow:0 6px 18px rgba(255,120,170,0.06)}
-
-/* Wallpaper grid */
-.wallpapers-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
-.wallpapers-grid img{ width:100%; border-radius:10px; cursor:pointer; transition:transform .18s; }
-.wallpapers-grid img:hover{ transform:scale(1.03); }
 
 /* Pomodoro */
 .pomodoro-big{ font-size:36px; text-align:center; color:#ff4880; margin:8px 0; }
@@ -105,109 +100,51 @@ button.cta{ background:var(--accent); color:white;border:none;padding:10px 12px;
 /* Water tracker */
 .water-grid{ display:flex; gap:8px; align-items:center; }
 
-/* Small responsive */
-@media(max-width:1050px){
-  .grid{ grid-template-columns: 1fr; padding:14px; }
-  .bot-box{ right:12px; left:12px; width:auto; }
-  .left-col, .right-col{ order:2; }
-  .center-col{ order:1; }
+/* Locked screen */
+#lock-screen{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background: #ff8fab;
+  color:white;
 }
-
-/* Tiny animations */
-@keyframes pop { 0%{transform:scale(.95)}50%{transform:scale(1.05)}100%{transform:scale(1)} }
-.pulse{ animation: pop .45s ease; }
-
-/* Locked screen specific */
-.lock-center{ text-align:center; color:white; padding:22px; }
 .lock-panel{
   width:340px; background: linear-gradient(180deg,#ff93c6,#ff6fa8); padding:20px; border-radius:16px;
   box-shadow:0 20px 50px rgba(184,48,122,0.18);
+  text-align:center;
 }
-.lock-input{ width:100%; padding:12px; border-radius:12px; border:none; outline:none; text-align:center; font-size:18px; }
+.lock-panel img{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:12px;
+  border:3px solid rgba(255,255,255,0.6);
+}
+.lock-input{
+  width:100%; padding:12px; border-radius:12px; border:none; outline:none; text-align:center; font-size:18px;
+}
+.lock-error{ margin-top:10px; color:white; font-size:14px; }
 
-/* Tiny helpers */
-.kv{ font-size:13px; color:#7a4f6a; margin-top:8px; }
-
-/* --- MOBILE RESPONSIVE --- */
-@media (max-width: 768px) {
-
-    body {
-        font-size: 16px;
-        overflow-x: hidden;
-    }
-
-    #main { padding: 15px; }
-
-    .card {
-        margin: 12px 0;
-        padding: 15px;
-        border-radius: 15px;
-        font-size: 16px;
-    }
-
-    input, textarea, button {
-        font-size: 16px;
-        padding: 12px;
-    }
-
-    #botBtn {
-        width: 50px;
-        height: 50px;
-        font-size: 22px;
-        bottom: 20px;
-        right: 20px;
-    }
-
-    #botBox {
-        width: 90%;
-        max-width: 350px;
-        height: 350px;
-        bottom: 90px;
-        right: 5%;
-        border-radius: 15px;
-    }
-
-    #botMessages { padding: 8px; }
-
-    #prayerPopup {
-        width: 90%;
-        right: 5%;
-        padding: 12px;
-        font-size: 15px;
-    }
-
-    #todoList li, #studyList li { font-size: 16px; margin: 8px 0; }
-
-    body {
-        background-size: cover;
-        background-position: center;
-    }
-
-    h1, h2 { font-size: 20px; }
-
-    #lock-screen h1 { font-size: 24px; }
-
-    #lock-screen input { font-size: 16px; padding: 12px; }
+/* Mobile responsiveness */
+@media (max-width:768px){
+  .grid{ grid-template-columns:1fr; padding:14px; }
+  .bot-box{ right:12px; left:12px; width:auto; }
+  .left-col, .right-col{ order:2 }
+  .center-col{ order:1 }
+  body{ font-size:16px; overflow-x:hidden; }
+  #botBtn{ width:50px; height:50px; font-size:22px; bottom:20px; right:20px; }
+  .card{ font-size:16px; padding:15px; margin:12px 0; border-radius:15px; }
+  input, textarea, button{ font-size:16px; padding:12px; }
+  #pomodoroDisplay{ font-size:32px; }
 }
 
-/* --- EXTRA SMALL PHONES --- */
-@media (max-width: 480px) {
-
-    .card { padding: 12px; margin: 10px 0; }
-
-    input, textarea, button { font-size: 15px; padding: 10px; }
-
-    #botBox { height: 300px; }
-
-    h1, h2 { font-size: 18px; }
-
-    #lock-screen h1 { font-size: 22px; }
+/* Extra small phones */
+@media(max-width:480px){
+  .card{ font-size:15px; padding:12px; margin:10px 0; }
+  input, textarea, button{ font-size:15px; padding:10px; }
+  #botBox{ height:300px; }
 }
-
-/* --------- NEW ADDITIONS --------- */
-/* Ensure wallpaper, period, pomodoro, hydration, AI sections are smooth and spaced */
-.left-col > .card, .center-col > .card, .right-col > .card {
-  transition: all 0.3s ease-in-out;
-}
-
-.card:hover { transform: translateY(-2px); }
