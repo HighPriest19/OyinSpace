@@ -7,6 +7,6 @@ OyinStudyCorner - Setup instructions
 5) Replace WhatsApp number in components/lock-screen.html (wa.me/234XXXXXXXXXX).
 6) Open index.html with Live Server.
 
-Lock code: OH25
+Lock code: 
 
 All data stored in localStorage. If you want cloud sync later (Firebase), I can add it.
