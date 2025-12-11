@@ -1,0 +1,43 @@
+<div class="card">
+  <h2>Pomodoro Timer ⏱️</h2>
+  <div class="pomodoro-big" id="pomTime">25:00</div>
+  <div style="display:flex; gap:8px; justify-content:center;">
+    <button class="cta" onclick="startPomodoro(25)">Start 25</button>
+    <button onclick="startPomodoro(5)">Short Break</button>
+    <button onclick="stopPomodoro()">Stop</button>
+  </div>
+</div>
+
+<script>
+let pomTimer=null; let pomRemaining=1500; // sec
+function pomodoroSectionInit(){
+  const s = localStorage.getItem("pomRemaining");
+  if(s) pomRemaining = Number(s);
+  updatePom();
+}
+function startPomodoro(min){
+  stopPomodoro();
+  pomRemaining = min * 60;
+  localStorage.setItem("pomRemaining", String(pomRemaining));
+  pomTimer = setInterval(()=> {
+    pomRemaining--;
+    localStorage.setItem("pomRemaining", String(pomRemaining));
+    updatePom();
+    if(pomRemaining <= 0){
+      stopPomodoro();
+      const a = new Audio("assets/audio/notification.mp3");
+      a.volume = 0.28; a.play().catch(()=>{});
+      alert("Pomodoro finished 💗");
+    }
+  }, 1000);
+}
+function stopPomodoro(){
+  clearInterval(pomTimer); pomTimer = null;
+}
+function updatePom(){
+  const mm = String(Math.floor(pomRemaining/60)).padStart(2,"0");
+  const ss = String(pomRemaining%60).padStart(2,"0");
+  document.getElementById("pomTime").textContent = `${mm}:${ss}`;
+}
+window.pomodoroSectionInit = pomodoroSectionInit;
+</script>

@@ -1,0 +1,35 @@
+<div class="card">
+  <h2>Daily Soft-Care 🌸</h2>
+  <ul id="selfcareList" style="padding-left:18px;">
+    <li><label><input type="checkbox" data-key="drink" /> Drink water 💧</label></li>
+    <li><label><input type="checkbox" data-key="skin" /> Skin care ✨</label></li>
+    <li><label><input type="checkbox" data-key="eat" /> Eat something 🍓</label></li>
+    <li><label><input type="checkbox" data-key="stretch" /> Stretch / rest 🧘‍♀️</label></li>
+    <li><label><input type="checkbox" data-key="grat" /> Prayer / gratitude 🩷</label></li>
+    <li><label><input type="checkbox" data-key="evening" /> Evening routine 🌙</label></li>
+  </ul>
+  <div style="margin-top:10px;">
+    <button class="cta" onclick="saveSelfCare()">Save today's checks</button>
+  </div>
+</div>
+
+<script>
+function selfcareListInit(){
+  const boxes = document.querySelectorAll("#selfcareList input[type=checkbox]");
+  const saved = JSON.parse(localStorage.getItem("selfcare_today") || "{}");
+  boxes.forEach(b=>{
+    const k = b.dataset.key;
+    b.checked = !!saved[k];
+    b.addEventListener("change", ()=> {
+      // live store
+      const s = JSON.parse(localStorage.getItem("selfcare_today") || "{}");
+      s[k] = b.checked;
+      localStorage.setItem("selfcare_today", JSON.stringify(s));
+    });
+  });
+}
+function saveSelfCare(){
+  alert("Saved! You're doing great 💗");
+}
+window.selfcareListInit = selfcareListInit;
+</script>

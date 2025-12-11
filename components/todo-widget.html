@@ -1,0 +1,43 @@
+<div class="card">
+  <h2>To-Do List 🌸</h2>
+  <input id="todoInput" placeholder="Add a task..." />
+  <div style="display:flex; gap:8px; margin-top:8px">
+    <button class="cta" onclick="addTodo()">Add</button>
+    <button onclick="clearTodos()">Clear All</button>
+  </div>
+  <ul id="todoList" style="margin-top:12px; padding-left:18px"></ul>
+</div>
+
+<script>
+function todoSectionInit(){
+  renderTodos();
+}
+function getTodos(){ return JSON.parse(localStorage.getItem("oyin_todos") || "[]"); }
+function renderTodos(){
+  const ul = document.getElementById("todoList");
+  ul.innerHTML = "";
+  const todos = getTodos();
+  todos.forEach((t,i)=>{
+    const li = document.createElement("li");
+    li.innerHTML = `<span>${t}</span> <button style="margin-left:8px" onclick="deleteTodo(${i})">x</button>`;
+    ul.appendChild(li);
+  });
+}
+function addTodo(){
+  const v = document.getElementById("todoInput").value.trim();
+  if(!v) return;
+  const todos = getTodos();
+  todos.push(v);
+  localStorage.setItem("oyin_todos", JSON.stringify(todos));
+  document.getElementById("todoInput").value = "";
+  renderTodos();
+}
+function deleteTodo(i){
+  const todos = getTodos();
+  todos.splice(i,1);
+  localStorage.setItem("oyin_todos", JSON.stringify(todos));
+  renderTodos();
+}
+function clearTodos(){ localStorage.removeItem("oyin_todos"); renderTodos(); }
+window.todoSectionInit = todoSectionInit;
+</script>

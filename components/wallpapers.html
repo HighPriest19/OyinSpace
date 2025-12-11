@@ -1,0 +1,25 @@
+<div class="card">
+  <h2>Wallpapers 🎀</h2>
+  <div class="wallpapers-grid">
+    <img src="assets/images/wallpapers/wp1.JPG" alt="wp1" onclick="applyWallpaper(this.src)">
+    <img src="assets/images/wallpapers/wp2.JPG" alt="wp2" onclick="applyWallpaper(this.src)">
+    <img src="assets/images/wallpapers/wp3.JPG" alt="wp3" onclick="applyWallpaper(this.src)">
+  </div>
+  <div style="margin-top:10px" class="kv">Click to set background. Saved per preference.</div>
+</div>
+
+<script>
+function wallpapersSectionInit(){
+  const cur = localStorage.getItem("oyin_wallpaper");
+  if(cur) document.body.style.backgroundImage = `url('${cur}')`;
+}
+function applyWallpaper(src){
+  document.body.style.backgroundImage = `url('${src}')`;
+  document.body.style.backgroundSize = "cover";
+  localStorage.setItem("oyin_wallpaper", src);
+  // tiny effect
+  document.body.classList.add("pulse");
+  setTimeout(()=> document.body.classList.remove("pulse"), 420);
+}
+window.wallpapersSectionInit = wallpapersSectionInit;
+</script>

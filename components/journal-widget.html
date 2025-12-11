@@ -1,0 +1,22 @@
+<div class="card">
+  <h2>Daily Journal 🦋</h2>
+  <textarea id="oyinJournal" rows="5" placeholder="Write something..."></textarea>
+  <div style="display:flex; gap:8px; margin-top:8px;">
+    <button class="cta" onclick="saveJournal()">Save</button>
+    <button onclick="clearJournal()">Clear</button>
+  </div>
+</div>
+
+<script>
+function journalSectionInit(){
+  const t = localStorage.getItem("oyin_journal") || "";
+  document.getElementById("oyinJournal").value = t;
+}
+function saveJournal(){
+  const v = document.getElementById("oyinJournal").value;
+  localStorage.setItem("oyin_journal", v);
+  alert("Saved your thoughts 💗");
+}
+function clearJournal(){ localStorage.removeItem("oyin_journal"); document.getElementById("oyinJournal").value=""; }
+window.journalSectionInit = journalSectionInit;
+</script>

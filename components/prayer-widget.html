@@ -1,0 +1,28 @@
+<div class="card">
+  <h2>Prayer Times 🌙</h2>
+  <div id="prayerList"></div>
+  <div style="margin-top:10px;">
+    <button class="cta" onclick="setPrayerReminders()">Enable reminders</button>
+  </div>
+</div>
+
+<script>
+/* prayer widget init */
+function prayerListInit(){
+  // default (you can allow user to edit)
+  const times = [
+    {name:"Fajr", time:"05:00"},
+    {name:"Dhuhr", time:"13:00"},
+    {name:"Asr", time:"16:15"},
+    {name:"Maghrib", time:"18:30"},
+    {name:"Isha", time:"19:45"}
+  ];
+  const container = document.getElementById("prayerList");
+  container.innerHTML = times.map(t=>`<div style="display:flex;justify-content:space-between;padding:6px 0"><strong>${t.name}</strong><span class="kv">${t.time}</span></div>`).join("");
+}
+function setPrayerReminders(){
+  localStorage.setItem("prayerReminders","true");
+  alert("Prayer reminders enabled 💗 (will use local timers)");
+}
+window.prayerListInit = prayerListInit;
+</script>

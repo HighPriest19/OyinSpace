@@ -1,0 +1,41 @@
+<div class="card">
+  <h2>Study Planner 📘</h2>
+  <input id="studyTopic" placeholder="Subject or topic" />
+  <input id="studyTime" type="time" style="margin-top:8px" />
+  <div style="display:flex; gap:8px; margin-top:8px;">
+    <button class="cta" onclick="addStudy()">Save</button>
+    <button onclick="clearStudies()">Clear</button>
+  </div>
+  <ul id="studyList" style="margin-top:12px; padding-left:18px"></ul>
+</div>
+
+<script>
+function studySectionInit(){
+  renderStudies();
+}
+function getStudy(){ return JSON.parse(localStorage.getItem("oyin_study") || "[]"); }
+function renderStudies(){
+  const ul = document.getElementById("studyList");
+  ul.innerHTML = "";
+  getStudy().forEach((s,i)=>{
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${s.topic}</strong> - ${s.time} <button onclick="delStudy(${i})">x</button>`;
+    ul.appendChild(li);
+  });
+}
+function addStudy(){
+  const topic = document.getElementById("studyTopic").value.trim();
+  const time = document.getElementById("studyTime").value;
+  if(!topic || !time) return;
+  const arr = getStudy();
+  arr.push({topic,time});
+  localStorage.setItem("oyin_study", JSON.stringify(arr));
+  document.getElementById("studyTopic").value = "";
+  renderStudies();
+}
+function delStudy(i){
+  const a = getStudy(); a.splice(i,1); localStorage.setItem("oyin_study", JSON.stringify(a)); renderStudies();
+}
+function clearStudies(){ localStorage.removeItem("oyin_study"); renderStudies(); }
+window.studySectionInit = studySectionInit;
+</script>

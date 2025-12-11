@@ -1,0 +1,21 @@
+<div class="card">
+  <h2>Hydration Tracker 💧</h2>
+  <div class="water-grid">
+    <button class="cta" onclick="logWater()">+ Drink</button>
+    <div id="waterCount" class="kv">0 cups today</div>
+  </div>
+</div>
+
+<script>
+function waterSectionInit(){
+  const c = Number(localStorage.getItem("waterCount") || 0);
+  document.getElementById("waterCount").textContent = `${c} cups today`;
+}
+function logWater(){
+  let c = Number(localStorage.getItem("waterCount") || 0);
+  c++; localStorage.setItem("waterCount", String(c));
+  document.getElementById("waterCount").textContent = `${c} cups today`;
+  alert("Good job staying hydrated 💧");
+}
+window.waterSectionInit = waterSectionInit;
+</script>

@@ -1,0 +1,33 @@
+<div class="card">
+  <h2>Period Tracker 🌺</h2>
+  <div style="display:flex; gap:8px; align-items:center;">
+    <input id="periodStart" type="date">
+    <button class="cta" onclick="savePeriod()">Save</button>
+  </div>
+  <div id="periodInfo" class="kv" style="margin-top:8px"></div>
+</div>
+
+<script>
+function periodSectionInit(){
+  const dt = localStorage.getItem("oyin_period_start");
+  if(dt) document.getElementById("periodStart").value = dt;
+  renderPeriodInfo();
+}
+function savePeriod(){
+  const d = document.getElementById("periodStart").value;
+  if(!d) return alert("Pick a start date 💗");
+  localStorage.setItem("oyin_period_start", d);
+  alert("Saved! Gentle self-care tips will appear when needed 🌸");
+  renderPeriodInfo();
+}
+function renderPeriodInfo(){
+  const d = localStorage.getItem("oyin_period_start");
+  const info = document.getElementById("periodInfo");
+  if(!d){ info.textContent = "No start date saved."; return; }
+  const start = new Date(d);
+  const today = new Date();
+  const diff = Math.floor((today-start)/(1000*60*60*24));
+  info.textContent = `Cycle day: ${diff+1} (since ${d}) — gentle reminders will appear.`;
+}
+window.periodSectionInit = periodSectionInit;
+</script>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Oyin’s Study Corner 💗</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+    
+
+  <!-- LOCK SCREEN (loaded from components/lock-screen.html) -->
+  <div id="lock-screen"></div>
+
+  <!-- MAIN (hidden until unlocked) -->
+  <main id="main" style="display:none;">
+    <header class="topbar">
+      <div class="profile">
+        <img id="profilePic" src="assets/images/profile.JPG" alt="Oyin" />
+        <div>
+          <h1 id="greeting">Hello Oyin 💗</h1>
+          <p id="subGreeting">Soft pink princess mode activated ✨</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button id="themeBtn" title="Switch theme"><i class="fa-solid fa-palette"></i></button>
+        <button id="logoutBtn" title="Lock"><i class="fa-solid fa-lock"></i></button>
+      </div>
+    </header>
+
+    <section class="grid">
+      <aside class="left-col">
+        <div id="selfcare-section"></div>
+        <div id="prayer-section"></div>
+        <div id="wallpapers-section"></div>
+      </aside>
+
+      <section class="center-col">
+        <div id="todo-section"></div>
+        <div id="study-section"></div>
+        <div id="journal-section"></div>
+      </section>
+
+      <aside class="right-col">
+        <div id="pomodoro-section"></div>
+        <div id="period-section"></div>
+        <div id="water-section"></div>
+      </aside>
+    </section>
+
+    <!-- AI Bot Button -->
+    <button id="botBtn" class="bot-btn" aria-label="Open OyinBot"> 
+      <i class="fa-solid fa-message"></i>
+    </button>
+
+    <!-- AI Chat Box -->
+    <div id="botBox" class="bot-box" aria-hidden="true"></div>
+
+  </main>
+
+<script src="lock.js"></script>
+<script src="app.js"></script>
+<script src="ai.js"></script>
+</body>
+</html>
