@@ -4,6 +4,19 @@
 function save(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
 function load(key){ return JSON.parse(localStorage.getItem(key)) || []; }
 
+/* ---------- Dynamic Background Color ---------- */
+function setBackgroundByTime(){
+    const h = new Date().getHours();
+    if(h < 12){
+        document.body.style.background = "#ffe6f2"; // morning pink
+    } else if(h < 18){
+        document.body.style.background = "#ffb7d1"; // afternoon pink
+    } else {
+        document.body.style.background = "#ff8fab"; // evening/night pink
+    }
+}
+setBackgroundByTime();
+
 /* ---------- GREETING ---------- */
 function greeting(){
     const h = new Date().getHours();
@@ -110,31 +123,6 @@ selfcareSection.innerHTML = `<div class="card"><h2>Daily Self-Care 💗</h2><ul 
 const selfcareListEl = document.getElementById("selfcareList");
 selfcareListEl.innerHTML = selfcareTasks.map(t=>`<li>${t}</li>`).join("");
 
-/* ---------- WALLPAPERS ---------- */
-const wallpapersSection = document.getElementById("wallpapers-section");
-const wallpapers = [
-    "assets/images/wallpapers/wall1.jpg",
-    "assets/images/wallpapers/wall2.jpg",
-    "assets/images/wallpapers/wall3.jpg"
-];
-wallpapersSection.innerHTML = `
-<div class="card">
-  <h2>Wallpapers 🎨</h2>
-  <div class="wallpapers-grid" id="wallpaperGrid"></div>
-</div>`;
-const wallpaperGridEl = document.getElementById("wallpaperGrid");
-wallpapers.forEach(url=>{
-    const img = document.createElement("img");
-    img.src = url;
-    img.addEventListener("click", ()=>{
-        document.body.style.backgroundImage = `url(${url})`;
-        localStorage.setItem("oyinWallpaper", url);
-    });
-    wallpaperGridEl.appendChild(img);
-});
-// Load saved wallpaper
-const savedWallpaper = localStorage.getItem("oyinWallpaper");
-if(savedWallpaper) document.body.style.backgroundImage = `url(${savedWallpaper})`;
 
 /* ---------- WATER TRACKER ---------- */
 const waterSection = document.getElementById("water-section");
